@@ -18,7 +18,7 @@ Keyboard commands:
 	R: Reset the origin and stop all movement. Also resets framerate optimization.
 	n/N: Advance to next/previous image.
 	Z: Randomize p, q, and the image.
-	I: Invert color of odd-parity regions. Currently SLOW reset on Windows.
+	I: Invert color of odd-parity regions.
 
 Note: p and q are equavalent to Schläfli symbol{p,q}, where (p - 2)(q - 2) > 4 for hyperbolic tessellations.
 

@@ -15,8 +15,6 @@ namespace Poincare.Geometry {
 			
 			this.Re = re;
 			this.Im = im;
-			
-//			Debug.Assert(ModulusSquared < 1 / Accuracy.LinearToleranceSquared);
 		}
 
 		public static Complex CreatePolar(double r, double theta) {
