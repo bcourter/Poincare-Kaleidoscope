@@ -1,6 +1,6 @@
 ﻿Poincare'
-(c) 2012 Blake Courter  (bcourter <at> mac <dot> com)
-Alpha 0.01
+(c) 2012 Blake Courter  (bcourter <a> mac <-> com)
+Alpha 0.03
 WARNING: This is barely-tested software. Using it could destroy the planet, for all we know.
 
 Usage: Poincare.exe [Path to image directory]
@@ -19,6 +19,7 @@ Keyboard commands:
 	n/N: Advance to next/previous image.
 	Z: Randomize p, q, and the image.
 	I: Invert color of odd-parity regions.
+	L: Make limit rotation.
 
 Note: p and q are equavalent to Schläfli symbol{p,q}, where (p - 2)(q - 2) > 4 for hyperbolic tessellations.
 

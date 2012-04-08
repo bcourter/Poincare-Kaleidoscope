@@ -9,7 +9,9 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
-namespace Poincare.Geometry {
+using Poincare.Geometry;
+
+namespace Poincare.PoincareDisc {
 	public class Disc {
 		FundamentalRegion fundamentalRegion;
 		Face currentFace, initialFace;
@@ -31,9 +33,7 @@ namespace Poincare.Geometry {
 			//	sectorBoundaries = new CircLine[fundamentalRegion.P];
 			
 			currentFace = new Face(fundamentalRegion);  // TBD fix extra face bug when centered
-			//			currentFace = Mobius.CreateDiscAutomorphism(new Complex(0, 0.01), 0) * new Face(fundamentalRegion);  // TBD fix extra face bug when centered
 			initialFace = currentFace;
-
 
 			// texture
 			GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);
@@ -56,7 +56,6 @@ namespace Poincare.Geometry {
 			r /= size;
 			g /= size;
 			b /= size;
-			//			backgroundColor = Color.Black;
 			backgroundColor = Color.FromArgb(r, g, b);
 
 			drawCount = 1;
@@ -121,7 +120,7 @@ namespace Poincare.Geometry {
 			Mobius toCenter = Mobius.CreateDiscAutomorphism(currentFace.Center, 0);
 			double angle = (toCenter * currentFace.Vertices[0]).Argument;
 			Mobius seedFaceTrans = Mobius.CreateDiscAutomorphism(currentFace.Center, 0) *
-				Mobius.CreateRotation(angle - initialFace.Vertices[0].Argument);
+					Mobius.CreateRotation(angle - initialFace.Vertices[0].Argument);
 			
 			currentFace = seedFaceTrans * initialFace;
 			Complex texOffset = new Complex(0.5 + 0.5 * Math.Cos(textureTime / 20), 0.5 + 0.5 * Math.Sin(3 * textureTime / 50));
@@ -132,7 +131,7 @@ namespace Poincare.Geometry {
 //				//	sectorBoundaries[i].DrawGL(Color4.Pink);
 //			}
 
-			currentFace.DrawGL(new Color4(1f, 1f, 1f, 1f), texture, textureInverse, isInverting, isInverted, texOffset);
+			//		currentFace.DrawGL(new Color4(1f, 1f, 1f, 1f), texture, textureInverse, isInverting, isInverted, texOffset);
 			
 #if true
 			IList<Face>[] faces = new IList<Face>[1];
@@ -154,6 +153,7 @@ namespace Poincare.Geometry {
 #endif
 
 			Color4 color = new Color4(1f, 1f, 1f, 0.5f);
+
 			foreach (IList<Face> faceList in faces) {
 				foreach (Face face in faceList) 
 					face.DrawGL(color, texture, textureInverse, isInverting, isInverted, texOffset);

@@ -59,9 +59,9 @@ namespace Poincare.Geometry {
 		}
 		
 		public static Complex operator /(Complex a, Complex b) {
-			double denominator = b.Re * b.Re + b.Im * b.Im;
-			Debug.Assert(!Accuracy.LengthIsZero(Math.Sqrt(denominator)));
-			return new Complex((a.Re * b.Re + a.Im * b.Im) / denominator, (a.Im * b.Re - a.Re * b.Im) / denominator);
+			double automorphy = b.Re * b.Re + b.Im * b.Im;
+			Debug.Assert(!Accuracy.LengthIsZero(Math.Sqrt(automorphy)));
+			return new Complex((a.Re * b.Re + a.Im * b.Im) / automorphy, (a.Im * b.Re - a.Re * b.Im) / automorphy);
 		}
 		
 		// scalars
@@ -115,17 +115,11 @@ namespace Poincare.Geometry {
 #endregion
 		
 #region properties
-		// statics
 		public static Complex Zero { get { return new Complex(0, 0); } }
 		
 		public static Complex One { get { return new Complex(1, 0); } }
 		
 		public static Complex I { get { return new Complex(0, 1); } }
-		
-		// properties
-//		public double Re { get { return re; } }
-//		
-//		public double Im { get { return im; } }
 		
 		public double Modulus { get { return Math.Sqrt(Re * Re + Im * Im); } }
 		

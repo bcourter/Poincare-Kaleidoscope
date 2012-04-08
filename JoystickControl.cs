@@ -100,7 +100,10 @@ namespace Poincare.Application {
 		}
 		
 		public void Sample() {
+			#pragma warning disable 0612 // obsolete
 			PoincareWindow.InputDriver.Poll(); 
+			#pragma warning restore 0612
+
 #if false
 			string op = string.Empty;
 			for (int i = 0; i < Joystick.Axis.Count; i++) 
@@ -113,6 +116,7 @@ namespace Poincare.Application {
 			double scale = 0.001;
 			double limit = 0.15;
 			PoincareWindow.Offset += new Complex(Joystick.Axis[0] * scale, Joystick.Axis[1] * scale);
+			PoincareWindow.Offset += new Complex(Joystick.Axis[0] * scale, 0);
 			if (PoincareWindow.Offset.ModulusSquared > limit * limit)
 				PoincareWindow.Offset = PoincareWindow.Offset.Normalized * limit;
 			

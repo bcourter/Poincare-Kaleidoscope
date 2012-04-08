@@ -6,6 +6,7 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 namespace Poincare.Geometry {	
+	// TBD currently not efficient
 	public class TrimmedCircLine {
 		CircLine circLine;
 		Interval bounds;
