@@ -51,7 +51,7 @@ namespace Poincare.Application {
 			case JoystickButton.Button5: // Thumb top right
 				PoincareWindow.Randomize();
 				break;
-				
+
 			case JoystickButton.Button6: // Pad 7
 				PoincareWindow.IsMoving = !PoincareWindow.IsMoving;
 				break;
@@ -100,7 +100,8 @@ namespace Poincare.Application {
 		}
 		
 		public void Sample() {
-			#pragma warning disable 0612 // obsolete
+			#pragma warning disable 0612
+			// obsolete
 			PoincareWindow.InputDriver.Poll(); 
 			#pragma warning restore 0612
 

@@ -7,7 +7,7 @@ namespace Poincare.Geometry {
 		public readonly Complex A, B, C, D;
 
 		public Mobius(Complex a, Complex b, Complex c, Complex d) {
-		//	Debug.Assert(a * d - b * c != Complex.Zero, "Singular Mobius");
+		// Debug.Assert(a * d - b * c != Complex.Zero, "Singular Mobius");
 			if (a * d - b * c == Complex.Zero) {
 				this = Mobius.Identity;
 			}
@@ -86,8 +86,6 @@ namespace Poincare.Geometry {
 		}
 				
 #if false
-		public bool IsSingular { get { return A * D - B * C == Complex.Zero; } }
-		
 		public Mobius Normalized {
 			get {
 				if (IsSingular)

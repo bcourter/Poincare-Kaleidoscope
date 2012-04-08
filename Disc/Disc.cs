@@ -12,7 +12,7 @@ using OpenTK.Graphics.OpenGL;
 using Poincare.Geometry;
 
 namespace Poincare.PoincareDisc {
-	public class Disc {
+	public class Disc { 
 		FundamentalRegion fundamentalRegion;
 		Face currentFace, initialFace;
 		int texture, textureInverse;

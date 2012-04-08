@@ -6,13 +6,13 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Poincare.Geometry {	
 	public struct Complex {
-		public double Re;
-		public double Im;
+		public readonly double Re;
+		public readonly double Im;
 
 		public Complex(double re, double im) {
 			Debug.Assert(!double.IsNaN(re), "NaN");
 			Debug.Assert(!double.IsNaN(im), "NaN");
-			
+
 			this.Re = re;
 			this.Im = im;
 		}
