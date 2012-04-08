@@ -60,7 +60,7 @@ namespace Poincare.Application {
 			IsMoving = false;
 			IsRandomizing = false;
 			
-			ImageSpeed = 0;
+			ImageSpeed = 111;
 			ImageOffset = 0;
 			IsInverting = false;
 		}
