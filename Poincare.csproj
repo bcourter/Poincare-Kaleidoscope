@@ -9,7 +9,6 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Poincare</RootNamespace>
     <AssemblyName>Poincare</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,23 +42,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Complex.cs" />
-    <Compile Include="Mobius.cs" />
-    <Compile Include="Accuracy.cs" />
-    <Compile Include="Face.cs" />
-    <Compile Include="FundamentalRegion.cs" />
-    <Compile Include="TriangleMesh.cs" />
-    <Compile Include="CircLine.cs" />
-    <Compile Include="Interval.cs" />
-    <Compile Include="TrimmedCircLine.cs" />
-    <Compile Include="ITransformable.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="Disc.cs" />
-    <Compile Include="ComplexCollection.cs" />
     <Compile Include="JoystickControl.cs" />
     <Compile Include="KeyboardControl.cs" />
     <Compile Include="MouseControl.cs" />
     <Compile Include="PoincareWindow.cs" />
+    <Compile Include="Geometry\Accuracy.cs" />
+    <Compile Include="Geometry\CircLine.cs" />
+    <Compile Include="Geometry\Complex.cs" />
+    <Compile Include="Geometry\ComplexCollection.cs" />
+    <Compile Include="Geometry\Extensions.cs" />
+    <Compile Include="Geometry\Interval.cs" />
+    <Compile Include="Geometry\Mobius.cs" />
+    <Compile Include="Geometry\TrimmedCircLine.cs" />
+    <Compile Include="Disc\Disc.cs" />
+    <Compile Include="Disc\Face.cs" />
+    <Compile Include="Disc\FundamentalRegion.cs" />
+    <Compile Include="Disc\TriangleMesh.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="README.txt">
@@ -72,5 +70,9 @@
     <None Include="Resources\LawsonFront.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Geometry\" />
+    <Folder Include="Disc\" />
   </ItemGroup>
 </Project>

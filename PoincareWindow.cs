@@ -13,6 +13,7 @@ using OpenTK.Audio.OpenAL;
 using OpenTK.Input;
 
 using Poincare.Geometry;
+using Poincare.PoincareDisc;
 
 namespace Poincare.Application {
 	public class PoincareWindow : GameWindow {
@@ -29,7 +30,6 @@ namespace Poincare.Application {
 		double resetDuration = 60;
 		JoystickControl joystickControl = null;
 		MouseControl mouseControl = null;
-		KeyboardControl keyboardControl = null;
 		int p = 5, q = 5 ;
 		int imageIndex = 0;
 
@@ -60,7 +60,7 @@ namespace Poincare.Application {
 			IsMoving = false;
 			IsRandomizing = false;
 			
-			ImageSpeed = 111;
+			ImageSpeed = 0.04;
 			ImageOffset = 0;
 			IsInverting = false;
 		}
@@ -70,7 +70,7 @@ namespace Poincare.Application {
 		protected override void OnLoad(EventArgs e) {
 			base.OnLoad(e);		
 			
-			keyboardControl = new KeyboardControl(this);
+			new KeyboardControl(this);
 			mouseControl = new MouseControl(this);
 			
 			if (Joysticks.Count == 1)

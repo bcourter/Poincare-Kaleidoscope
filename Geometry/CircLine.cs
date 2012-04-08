@@ -9,7 +9,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Poincare.Geometry {
 	// http://www.cefns.nau.edu/~schulz/moe.pdf
-	public abstract class CircLine : ITransformable {
+	public abstract class CircLine {
 		protected double a, c;
 		protected Complex b;
 
@@ -42,15 +42,14 @@ namespace Poincare.Geometry {
 		// http://www.math.ubc.ca/~cass/research/pdf/Geometry.pdf
 		// http://www.math.okstate.edu/~wrightd/INDRA/MobiusonCircles.mpl
 		public static CircLine operator *(Mobius m, CircLine circLine) {
-#if true
+#if true 
 			Mobius inverse = m.Inverse;
 			Mobius hermitian = inverse.Transpose *
 				new Mobius(new Complex(circLine.a, 0), circLine.b.Conjugate, circLine.b, new Complex(circLine.c, 0)) *
 				inverse.Conjugate;
 
 			return CircLine.Create(hermitian.A.Re, hermitian.C, hermitian.D.Re);
-			//			return CircLine.Create(1, hermitian.C / hermitian.A.Re, hermitian.D.Re / hermitian.A.Re);
-#else
+#else // do it by decomposing the mobius -- slower
 			Complex a = m.A;
 			Complex b = m.B;
 			Complex c = m.C;
@@ -68,10 +67,6 @@ namespace Poincare.Geometry {
 			return scaled.Translate(a / c);
 #endif
 		}
-
-		//public bool PointIsLeftOf(Complex z) {
-		//    return (a * z.ModulusSquared * b.Conjugate * z + b * z.Conjugate + Complex.One * c).Argument < 0;
-		//}
 
 		public static bool operator ==(CircLine a, CircLine b) {
 			if (System.Object.ReferenceEquals(a, b))
@@ -167,20 +162,11 @@ namespace Poincare.Geometry {
 			public double Param { get { return param; } }
 		}
 
-		public ITransformable Transform(Mobius trans) {
-			return trans * this;
-		}
-
-		public ITransformable GetConjugate() {
-			return this.Conjugate;
-		}
-		
 		public bool IsPointOnLeft(Complex p) {
 			return a * p.ModulusSquared + (b.Conjugate * p + b * p.Conjugate).Re + c + Accuracy.LinearTolerance > 0;
 		}
 		
 		public bool ContainsPoint(Complex p) {
-	//		Debug.Assert(!Accuracy.LengthIsZero(0));
 			return Accuracy.LengthIsZero(a * p.ModulusSquared + (b.Conjugate * p + b * p.Conjugate).Re + c);
 		}
 		
@@ -271,7 +257,6 @@ namespace Poincare.Geometry {
 					return intersections;
 
 				double a = (r0 * r0 - r1 * r1 + d * d) / (2 * d);
-				//		double b = d - a;
 				double h = Math.Sqrt(r0 * r0 - a * a);
 				Complex p2 = p0 + a * (p1 - p0) / d;
 
@@ -306,11 +291,8 @@ namespace Poincare.Geometry {
 			Complex nearPoint = line.Project(Center).Point - line.Origin;
 
 			double dist = (Center - nearPoint).Modulus;
-			//	double angle = (Center - nearPoint).Argument;
 			if (dist - Radius > 0)
 				return null;
-
-			//		double angle = Math.Acos(dist / Radius);
 
 			Complex p;
 
@@ -377,12 +359,8 @@ namespace Poincare.Geometry {
 			Circle other = (Circle)circLine;
 			Complex p = intersections[0].Point;
 
-			//			double a2 = (p - this.Center).ModulusSquared;
-			//			double b2 = (p - other.Center).ModulusSquared;
-			//			double c2 = (this.Center - other.Center).ModulusSquared;
-			//			
-			//			return Accuracy.LinearTolerance * 1000 > a2 + b2 - c2;
-			return Accuracy.AngularTolerance > Math.Abs((p - this.Center).ModulusSquared + (p - other.Center).ModulusSquared - (this.Center - other.Center).ModulusSquared);
+			return Accuracy.AngularTolerance > 
+				Math.Abs((p - this.Center).ModulusSquared + (p - other.Center).ModulusSquared - (this.Center - other.Center).ModulusSquared);
 		}
 	
 		#region properties
@@ -398,8 +376,7 @@ namespace Poincare.Geometry {
 
 		public override CircLine Inverse {
 			get {
-				if (Accuracy.LengthIsZero((Center.ModulusSquared - RadiusSquared) / 1000)) {
-					//	return Line.Create(Complex.Zero, Center.Argument + Math.PI / 2);
+				if (Accuracy.LengthIsZero((Center.ModulusSquared - RadiusSquared))) {
 					return new Line(-b.Conjugate, 1);
 				}
 
@@ -411,9 +388,6 @@ namespace Poincare.Geometry {
 
 		public override Mobius AsInversion {
 			get {
-				//				if (Accuracy.LengthIsZero((Center.ModulusSquared - RadiusSquared) / 1000))
-				//					return Line.Create(Complex.Zero, Center.Argument + Math.PI / 2).AsInversion;
-
 				return new Mobius(Center, RadiusSquared - Complex.One * Center.ModulusSquared, Complex.One, -Center.Conjugate);
 			}
 		}

@@ -6,7 +6,9 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
-namespace Poincare.Geometry {
+using Poincare.Geometry;
+
+namespace Poincare.PoincareDisc {
 	// http://iweb.dl.sourceforge.net/project/poincare/poincare.pdf
 	public struct FundamentalRegion {
 		int p, q;
@@ -80,9 +82,6 @@ namespace Poincare.Geometry {
 		public Complex P1 { get { return Complex.One * d + Complex.CreatePolar(r, Math.PI - phi); } }
 
 		public Complex P2 { get { return Complex.One * (d - r); } }
-
-
-
 	}
 }
 

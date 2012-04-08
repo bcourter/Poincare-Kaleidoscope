@@ -6,7 +6,9 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
-namespace Poincare.Geometry {	
+using Poincare.Geometry;
+
+namespace Poincare.PoincareDisc {	
 	public struct TriangleMesh {
 		Complex[] points;
 		Complex[] pointTexCoords;
@@ -56,19 +58,6 @@ namespace Poincare.Geometry {
 			GL.Enable(EnableCap.Blend);
 			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 	
-#if false
-			GL.Begin(BeginMode.TriangleFan);
-			GL.Color4(new Color4(1f, 1f, 1f, 0.3f));
-			GL.TexCoord3((centerTexCoord + texOffset).Vector3d);
-			GL.Vertex3(center.Vector3d);
-			for (int i = 0; i < points.Length; i++) {	
-				//					GL.Color4(Extensions.Color4FromHSV((float)(2 * Math.PI * i / points.Count), 1f, 1f, 1f));
-				GL.TexCoord3((pointTexCoords[i] + texOffset).Vector3d);
-				GL.Vertex3(points[i].Vector3d);  
-			}
-			GL.End();	
-#else
-			
 			/*         08
 			 *       09  07
 			 *     10  14  06
@@ -86,133 +75,6 @@ namespace Poincare.Geometry {
 			const double mediumRadius = 0.5;
 			const double smallRadius = 0.8;
 		
-#if false
-			if (points.Length == largeCount) {
-				if (center.ModulusSquared > mediumRadius) {
-				//	if (!IsClockwise(points[0], points[2], points[4])) {
-						GL.Begin(BeginMode.TriangleStrip);
-						GLVertex(0, texOffset);
-						GLVertex(1, texOffset);
-						GLVertex(2, texOffset);
-						GL.End();	
-
-						GL.Begin(BeginMode.TriangleStrip);
-						GLVertex(2, texOffset);
-						GLVertex(3, texOffset);
-						GLVertex(4, texOffset);
-						GL.End();	
-				//	}
-					
-				//	if (!IsClockwise(points[4], points[6], points[8])) {
-						GL.Begin(BeginMode.TriangleStrip);
-						GLVertex(4, texOffset);
-						GLVertex(5, texOffset);
-						GLVertex(6, texOffset);
-						GL.End();	
-
-						GL.Begin(BeginMode.TriangleStrip);
-						GLVertex(6, texOffset);
-						GLVertex(7, texOffset);
-						GLVertex(8, texOffset);
-						GL.End();	
-				//	}
-					
-				//	if (!IsClockwise(points[8], points[10], points[0])) {
-						GL.Begin(BeginMode.TriangleStrip);
-						GLVertex(8, texOffset);
-						GLVertex(9, texOffset);
-						GLVertex(10, texOffset);
-						GL.End();	
-
-						GL.Begin(BeginMode.TriangleStrip);
-						GLVertex(10, texOffset);
-						GLVertex(11, texOffset);
-						GLVertex(0, texOffset);
-						GL.End();	
-				//	}
-					
-					points = new Complex[] {
-						points[0],
-						points[2],
-						points[4],
-						points[6],
-						points[8],
-						points[10]
-					};
-
-					pointTexCoords = new Complex[] {
-						pointTexCoords[0],
-						pointTexCoords[2],
-						pointTexCoords[4],
-						pointTexCoords[6],
-						pointTexCoords[8],
-						pointTexCoords[10],
-					};
-				}
-			}
-			
-			if (points.Length == mediumCount) {
-				if (center.ModulusSquared > smallRadius) {
-					GL.Begin(BeginMode.TriangleStrip);
-					GLVertex(0, texOffset);
-					GLVertex(1, texOffset);
-					GLVertex(2, texOffset);
-					GL.End();	
-
-					GL.Begin(BeginMode.TriangleStrip);
-					GLVertex(2, texOffset);
-					GLVertex(3, texOffset);
-					GLVertex(4, texOffset);
-					GL.End();	
-
-					GL.Begin(BeginMode.TriangleStrip);
-					GLVertex(4, texOffset);
-					GLVertex(5, texOffset);
-					GLVertex(0, texOffset);
-					GL.End();	
-
-					points = new Complex[] {
-						points[0],
-						points[2],
-						points[4]
-					};
-							
-					pointTexCoords = new Complex[] {
-						pointTexCoords[0],
-						pointTexCoords[2],
-						pointTexCoords[4]
-					};
-				}
-			}
-			
-			if (points.Length == smallCount) {
-				GL.Begin(BeginMode.TriangleStrip);
-				GLVertex(0, texOffset);
-				GLVertex(1, texOffset);
-				GLVertex(2, texOffset);
-				GL.End();	
-				
-				return;
-			}
-			
-			if (points.Length == mediumCount) {
-				GL.Begin(BeginMode.TriangleStrip);
-				GLVertex(0, texOffset);
-				GLVertex(5, texOffset);
-				GLVertex(1, texOffset);
-				GLVertex(3, texOffset);
-				GLVertex(2, texOffset);
-				GL.End();	
-			
-				GL.Begin(BeginMode.TriangleStrip);
-				GLVertex(5, texOffset);
-				GLVertex(4, texOffset);
-				GLVertex(3, texOffset);
-				GL.End();	
-	
-				return;
-			}
-#endif
 			Debug.Assert(points.Length == largeCount);
 			
 			GL.Begin(BeginMode.TriangleStrip);
@@ -250,7 +112,6 @@ namespace Poincare.Geometry {
 			GLVertex(8, texOffset);
 			GLVertex(7, texOffset);
 			GL.End();	
-#endif
 			
 			GL.Disable(EnableCap.Texture2D);
 			GL.Disable(EnableCap.Blend);

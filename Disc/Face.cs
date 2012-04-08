@@ -5,7 +5,9 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
-namespace Poincare.Geometry {
+using Poincare.Geometry;
+
+namespace Poincare.PoincareDisc {
 	public class Face {
 		FundamentalRegion region;
 		Complex[] mesh;
@@ -131,11 +133,15 @@ namespace Poincare.Geometry {
 			Complex[] [] dualEdges = new Complex[p][];
 			Complex[] [] interiors = new Complex[2 * p][];
 
-#if false
+#if true
 			System.Threading.Tasks.Parallel.For(0, p, i => {
-				newEdges[i] = m * face.edges[i];
-				newPolygons[i] = m * face.polygons[i];
-				newPolygons[i + p] = m * face.polygons[i + p];
+				edges[i] = m * face.edges[i];
+				halfEdges[i] = m * face.halfEdgePoints[i];
+				halfEdges[i + p] = m * face.halfEdgePoints[i + p];
+				spines[i] = m * face.spinePoints[i];
+				dualEdges[i] = m * face.dualEdgePoints[i];
+				interiors[i] = m * face.interiorPoints[i];
+				interiors[i + p] = m * face.interiorPoints[i + p];
 			});
 #else
 			for (int i = 0; i < p; i++) {
@@ -167,7 +173,6 @@ namespace Poincare.Geometry {
 				Complex[] [] interiors = new Complex[2 * p][];
 
 				for (int i = 0; i < p; i++) {
-					//	int ii = p - i - 1;
 					vertices[i] = this.vertices[i].Conjugate;
 					edgeCenters[i] = this.edgeCenters[i].Conjugate;
 
