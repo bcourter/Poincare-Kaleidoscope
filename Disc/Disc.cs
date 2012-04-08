@@ -197,11 +197,8 @@ namespace Poincare.PoincareDisc {
 					if (edge.IsConvex)
 						continue;
 
-					Circle circle = face.Edges[i].CircLine as Circle;
-					if (circle == null)
-						continue;
-
-					if (circle.RadiusSquared < 1E-4)
+					Circle circle = edge.CircLine as Circle;
+					if (circle != null && circle.RadiusSquared < 1E-4)
 						continue;
 
 					Face image = edge.CircLine.AsInversion * face.Conjugate;

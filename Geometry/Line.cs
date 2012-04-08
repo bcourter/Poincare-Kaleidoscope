@@ -16,7 +16,6 @@ namespace Poincare.Geometry {
 		}
 
 		public static Line Create(Complex point, double angle) {
-
 			return Create(point, point - Complex.CreatePolar(1, angle));
 		}
 

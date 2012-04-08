@@ -117,7 +117,6 @@ namespace Poincare.Application {
 			double scale = 0.001;
 			double limit = 0.15;
 			PoincareWindow.Offset += new Complex(Joystick.Axis[0] * scale, Joystick.Axis[1] * scale);
-			PoincareWindow.Offset += new Complex(Joystick.Axis[0] * scale, 0);
 			if (PoincareWindow.Offset.ModulusSquared > limit * limit)
 				PoincareWindow.Offset = PoincareWindow.Offset.Normalized * limit;
 			
