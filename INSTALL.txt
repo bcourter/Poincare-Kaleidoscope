@@ -1,0 +1,4 @@
+Poincare Kaleidoscope is developed using Mono and OpenTK, and has been known to build and run on .NET.  
+
+Poincare.sln should open and build with MonoDevelop (2.6 or later) or Visual Studio (10 or later).  Please let me know if you discover otherwise. 
+

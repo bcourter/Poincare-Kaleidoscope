@@ -5,8 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poincare", "Poincare.csproj
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{56C89E4F-846D-4DC9-8F08-66EC806AE51C}"
 	ProjectSection(SolutionItems) = preProject
-		Performance1.psess = Performance1.psess
-		Performance2.psess = Performance2.psess
+		README.txt = README.txt
+		INSTALL.txt = INSTALL.txt
 	EndProjectSection
 EndProject
 Global

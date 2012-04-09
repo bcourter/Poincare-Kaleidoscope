@@ -36,8 +36,8 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="OpenTK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4">
-      <HintPath>..\opentk\Binaries\OpenTK\Release\OpenTK.dll</HintPath>
+    <Reference Include="OpenTK">
+      <HintPath>lib\OpenTK\OpenTK.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
