@@ -24,13 +24,9 @@ namespace Poincare.PoincareDisc {
 		double circleLimitAlphaBand = 0;
 		double drawTimeTarget = 0.04;
 		
-		// CircLine[] sectorBoundaries;
-		// ComplexCollection sectorCollisionCenters = new ComplexCollection(10);
-		
 		public Disc(FundamentalRegion region, Bitmap bitmap, bool isInverting) {
 			this.fundamentalRegion = region;
 			this.isInverting = isInverting;
-			//	sectorBoundaries = new CircLine[fundamentalRegion.P];
 			
 			currentFace = new Face(fundamentalRegion);  // TBD fix extra face bug when centered
 			initialFace = currentFace;
@@ -125,42 +121,14 @@ namespace Poincare.PoincareDisc {
 			currentFace = seedFaceTrans * initialFace;
 			Complex texOffset = new Complex(0.5 + 0.5 * Math.Cos(textureTime / 20), 0.5 + 0.5 * Math.Sin(3 * textureTime / 50));
 
-//			for (int i = 0; i < fundamentalRegion.P; i++) {
-//				sectorBoundaries[i] = seedFaceTrans * Mobius.CreateRotation(2 * Math.PI * i / fundamentalRegion.P) * fundamentalRegion.L2;
-// //				if (i == 0 || i == fundamentalRegion.P - 1)
-//				//	sectorBoundaries[i].DrawGL(Color4.Pink);
-//			}
-
-			//		currentFace.DrawGL(new Color4(1f, 1f, 1f, 1f), texture, textureInverse, isInverting, isInverted, texOffset);
-			
-#if true
-			IList<Face>[] faces = new IList<Face>[1];
-			faces[0] = GetFaces(currentFace, 0);
-			
-#elif false
-			IList<Face>[] faces = new IList<Face>[fundamentalRegion.P];
-			
-			System.Threading.Tasks.ParallelOptions options = new System.Threading.Tasks.ParallelOptions();
-			options.MaxDegreeOfParallelism = 4;// fundamentalRegion.P; // -1 is for unlimited. 1 is for sequential.
-
-			System.Threading.Tasks.Parallel.For(0, fundamentalRegion.P, options, i =>
-				faces[i] = GetFaces(currentFace.Edges[i].CircLine.AsInversion * currentFace.Conjugate, i)
-			);
-#else
-			for (int i = 0; i < fundamentalRegion.P; i++) {
-				faces[i] = GetFaces(currentFace.Edges[i].CircLine.AsInversion * currentFace.Conjugate, i);
-			}
-#endif
+			IList<Face> faces = GetFaces(currentFace);
 
 			Color4 color = new Color4(1f, 1f, 1f, 0.5f);
-
-			foreach (IList<Face> faceList in faces) {
-				foreach (Face face in faceList) 
-					face.DrawGL(color, texture, textureInverse, isInverting, isInverted, texOffset);
+			foreach (Face face in faces) {
+				face.DrawGL(color, texture, textureInverse, isInverting, isInverted, texOffset);
 			}
 
 			DrawBlendedHorizon(backgroundColor);
-			// sectorCollisionCenters.Clear();
 			
 			drawTime = System.DateTime.Now.Ticks * 1E-7 - beginDraw;
 
@@ -174,12 +142,12 @@ namespace Poincare.PoincareDisc {
 			circleLimitAlphaBand = (circleLimitAlphaBand + (1 - (1 - circleLimit) * 2)) / 2;
 #endif
 			totalDraw += drawTime;
-
+			drawCount++;
+			
 			//		Console.WriteLine(string.Format("Frame:{0:F5} Avg:{1:F5}", drawTime, totalDraw / drawCount));
-			++drawCount;
 		}
 
-		public IList<Face> GetFaces(Face seedFace, int sector) {
+		public IList<Face> GetFaces(Face seedFace) {
 			List<Face > result = new List<Face>();
 			ComplexCollection faceCenters = new ComplexCollection(10);
 			Queue<Face > faceQueue = new Queue<Face>();
@@ -203,41 +171,8 @@ namespace Poincare.PoincareDisc {
 
 					Face image = edge.CircLine.AsInversion * face.Conjugate;
 					
-					//	Circle.Create(Complex.Zero, circleLimit).DrawGL(Color4.Red);
 					if (image.Center.ModulusSquared > circleLimit)
 						continue;
-					
-					//	if (image.Center.ModulusSquared < face.Center.ModulusSquared)
-					//		continue;
-
-					//	if (DiscSector.GetSector(image.Center) != sector)
-					//	 	continue;
-					
-//					int sectorOther = (sector + fundamentalRegion.P - 1) % fundamentalRegion.P;
-//					int sectorThis = sector;						
-//					if (
-//						(sectorBoundaries[sectorThis].ContainsPoint(image.Center)) ||
-//						(sectorBoundaries[sectorOther].ContainsPoint(image.Center)) 
-//					) {
-//					//	image.Center.DrawGL(Color4.Teal);
-//						faceQueue.Enqueue(image);
-//						faceCenters.Add(image.Center);
-//						
-//						if (sectorCollisionCenters.ContainsValue(image.Center)) 
-//							continue;
-//						
-//						lock (sectorCollisionCenters)
-//							sectorCollisionCenters.Add(image.Center);
-//						
-//						result.Add(image);
-//						continue;
-//					}
-
-//					if ((
-//						(sectorBoundaries[sectorThis].ArePointsOnSameSide(image.Center, seedFace.Center)) ||
-//						(sectorBoundaries[sectorOther].ArePointsOnSameSide(image.Center, seedFace.Center))
-//					)) 
-//						continue;
 
 					if (faceCenters.ContainsValue(image.Center))
 						continue;
@@ -252,7 +187,6 @@ namespace Poincare.PoincareDisc {
 		}
 
 		private void DrawBlendedHorizon(Color4 color) {
-		
 			Complex[] outerPoints = Circle.Create(Complex.Zero, 0.999).Polyline;
 			Complex[] middlePoints = Circle.Create(Complex.Zero, (circleLimit + 1) / 2).Polyline;
 			Complex[] innerPoints = Circle.Create(Complex.Zero, circleLimitAlphaBand).Polyline;
@@ -286,7 +220,6 @@ namespace Poincare.PoincareDisc {
 			GL.Disable(EnableCap.Blend);
 			
 			Circle.Unit.DrawGL(new Color4(1 - color.R, 1 - color.G, 1 - color.B, 1f));
-			
 		}
 
 	}
