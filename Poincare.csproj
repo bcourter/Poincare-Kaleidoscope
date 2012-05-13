@@ -62,17 +62,13 @@
     <Compile Include="Geometry\Line.cs" />
     <Compile Include="Disc\Edge.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="README.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <None Include="Poincare.sh" />
     <None Include="Resources\LawsonFront.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="op.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Geometry\" />

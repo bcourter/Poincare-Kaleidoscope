@@ -22,7 +22,12 @@ namespace Poincare.PoincareDisc {
 		double totalDraw;
 		double circleLimit = 0.985;
 		double circleLimitAlphaBand = 0;
-		double drawTimeTarget = 0.04;
+		double drawTimeTarget = 0.04; //0.04;
+
+		Face[] result = new Face[1000];
+		int resultLength;
+		ComplexCollection faceCenters = new ComplexCollection(10);
+		Queue<Face > faceQueue = new Queue<Face>(1000);
 		
 		public Disc(FundamentalRegion region, Bitmap bitmap, bool isInverting) {
 			this.fundamentalRegion = region;
@@ -84,7 +89,7 @@ namespace Poincare.PoincareDisc {
 
 		public void DrawGL(Mobius movement, double textureTime) {
 			double drawTime = 0;
-			double beginDraw = System.DateTime.Now.Ticks * 1E-7;
+			double time = System.DateTime.Now.Ticks * 1E-7;
 			currentFace = movement * currentFace;
 			bool isInverted = false;
 			
@@ -122,15 +127,19 @@ namespace Poincare.PoincareDisc {
 			Complex texOffset = new Complex(0.5 + 0.5 * Math.Cos(textureTime / 20), 0.5 + 0.5 * Math.Sin(3 * textureTime / 50));
 
 			IList<Face> faces = GetFaces(currentFace);
-
+			Console.Write(string.Format("{0:F5} ", System.DateTime.Now.Ticks * 1E-7-time));
+			
 			Color4 color = new Color4(1f, 1f, 1f, 0.5f);
-			foreach (Face face in faces) {
-				face.DrawGL(color, texture, textureInverse, isInverting, isInverted, texOffset);
+	//		foreach (Face face in faces) {
+		//		face.DrawGL(color, texture, textureInverse, isInverting, isInverted, texOffset);
+		
+			for(int i = 0; i < resultLength; i++) {
+				result[i].DrawGL(color, texture, textureInverse, isInverting, isInverted, texOffset);
 			}
 
 			DrawBlendedHorizon(backgroundColor);
 			
-			drawTime = System.DateTime.Now.Ticks * 1E-7 - beginDraw;
+			drawTime = System.DateTime.Now.Ticks * 1E-7 - time;
 
 #if true // adjust timing
 			double diff = drawTimeTarget - drawTime;
@@ -143,20 +152,29 @@ namespace Poincare.PoincareDisc {
 #endif
 			totalDraw += drawTime;
 			drawCount++;
+
 			
+
+//			double sleepTime = drawTimeTarget - (System.DateTime.Now.Ticks * 1E-7 - time) + 0.01;
+//			if (sleepTime > 0)
+//				System.Threading.Thread.Sleep((int) (sleepTime * 1000));
+
 			//		Console.WriteLine(string.Format("Frame:{0:F5} Avg:{1:F5}", drawTime, totalDraw / drawCount));
 		}
 
 		public IList<Face> GetFaces(Face seedFace) {
-			List<Face > result = new List<Face>();
-			ComplexCollection faceCenters = new ComplexCollection(10);
-			Queue<Face > faceQueue = new Queue<Face>();
+			faceQueue.Clear();
+			resultLength = 0;
 
 			faceQueue.Enqueue(seedFace);
 			faceCenters.Clear();
 			faceCenters.Add(seedFace.Center);
-			result.Add(seedFace);
+//			result.Add(seedFace);
+			result[resultLength++] = seedFace;
 
+			double time = System.DateTime.Now.Ticks * 1E-7;
+			
+				GC.Collect();
 			while (faceQueue.Count > 0) {
 				Face face = faceQueue.Dequeue();
 				for (int i = 0; i < face.Edges.Length; i++) {
@@ -178,12 +196,24 @@ namespace Poincare.PoincareDisc {
 						continue;
 
 					faceQueue.Enqueue(image);
-					result.Add(image);
+					result[resultLength++] = image;
+			
+					//		result.Add(image);
 					faceCenters.Add(image.Center);
-				}
+	
+//					if (System.DateTime.Now.Ticks * 1E-7 - time > drawTimeTarget)
+//						break;
+		 		if (resultLength <= 102)
+					Console.Write(string.Format("{0:F5} ", System.DateTime.Now.Ticks * 1E-7 - time));
 			}
 			
-			return result;
+
+				
+//				if (System.DateTime.Now.Ticks * 1E-7 - time > drawTimeTarget)
+//					break;
+			}
+
+			return null;
 		}
 
 		private void DrawBlendedHorizon(Color4 color) {

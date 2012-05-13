@@ -1,7 +1,8 @@
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
-
+using System.Drawing;
+using System.Drawing.Imaging;
 //using System.Linq;
 using System.Drawing;
 
@@ -52,7 +53,7 @@ namespace Poincare.Application {
 		/// <summary>Creates a window with the specified title.</summary>
 		public PoincareWindow()
 			: base(windowDefaultSize, windowDefaultSize, graphicsMode, "Poincare'") {
-			VSync = VSyncMode.On;
+			VSync = VSyncMode.Off;
 	
 			Offset = Complex.Zero;
 			AngleOffset = 0;
@@ -161,6 +162,7 @@ namespace Poincare.Application {
 		/// <param name="e">Contains timing information.</param>
 		protected override void OnRenderFrame(FrameEventArgs e) {
 			GC.Collect();
+
 			//	GC.WaitForPendingFinalizers();
 			base.OnRenderFrame(e);
 			
@@ -180,7 +182,7 @@ namespace Poincare.Application {
 
 			Mobius movement =
 				Mobius.CreateRotation(AngleOffset) *
-				Mobius.CreateDiscTranslation(Complex.Zero, Offset);
+					Mobius.CreateDiscTranslation(Complex.Zero, Offset);
 			
 			if (IsMoving)
 				movement = Mobius.CreateDiscTranslation(Complex.Zero, Complex.CreatePolar(0.01 * Math.Sin(2 * Math.PI * time / 50), 2 * Math.PI * time / 30)) * movement;
@@ -189,13 +191,36 @@ namespace Poincare.Application {
 			
 			GL.ClearColor(Color4.Black);
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
 			disc.DrawGL(movement, ImageOffset);
-			
+
 			//	PolarDemo(time);
 			//	LoopDemo(mousePos.Re);
 
+		//	SaveGL(time.ToString("000000000.000000"));
+
+
 			SwapBuffers();
+			
 		}
+
+		// http://www.opengl.org/discussion_boards/showthread.php/165932-Capture-OpenGL-screen-C/page2
+		public Bitmap SaveGL() {
+			Bitmap bmp = new Bitmap(Width, Height);
+			System.Drawing.Imaging.BitmapData data = bmp.LockBits(this.ClientRectangle, System.Drawing.Imaging.ImageLockMode.WriteOnly, 
+                System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+			GL.ReadPixels(0, 0, Width, Height, OpenTK.Graphics.OpenGL.PixelFormat.Bgr, PixelType.UnsignedByte, data.Scan0);
+			GL.Finish();
+			bmp.UnlockBits(data);
+			bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
+			return bmp;
+		}
+
+        private void SaveGL(string timestamp) {
+            Bitmap bmp = SaveGL();
+           bmp.Save("/home/blake/Projects/Poincare/Poincare/output/" + timestamp + ".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
+        //    bmp.Save("/dev/null", System.Drawing.Imaging.ImageFormat.Jpeg);
+        }
 
 		void LoopDemo(double t) {
 			int pointCount = 100;

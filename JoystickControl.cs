@@ -114,7 +114,7 @@ namespace Poincare.Application {
 			Console.WriteLine(op);
 #endif
 			
-			double scale = 0.001;
+			double scale = 0.001; // 0.001
 			double limit = 0.15;
 			PoincareWindow.Offset += new Complex(Joystick.Axis[0] * scale, Joystick.Axis[1] * scale);
 			if (PoincareWindow.Offset.ModulusSquared > limit * limit)
@@ -142,7 +142,7 @@ namespace Poincare.Application {
 			}
 			
 			if (isLimit) {
-				double ratio = 0.8;
+				double ratio = 0.8; //0.8;
 				double oldAngleOffset = PoincareWindow.AngleOffset;
 				PoincareWindow.MakeLimitRotation();
 				PoincareWindow.AngleOffset = (PoincareWindow.AngleOffset * (1 - ratio) + oldAngleOffset * ratio);
