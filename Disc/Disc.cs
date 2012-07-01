@@ -12,7 +12,9 @@ using OpenTK.Graphics.OpenGL;
 using Poincare.Geometry;
 
 namespace Poincare.PoincareDisc {
-	public class Disc { 
+	public class Disc {
+        public double DrawTime { get; set; }
+
 		FundamentalRegion fundamentalRegion;
 		Face currentFace, initialFace;
 		int texture, textureInverse;
@@ -89,7 +91,7 @@ namespace Poincare.PoincareDisc {
 		}
 
 		public void DrawGL(Mobius movement, double textureTime) {
-			double drawTime = 0;
+			DrawTime = 0;
 			double time = System.DateTime.Now.Ticks * 1E-7;
 			currentFace = movement * currentFace;
 			bool isInverted = false;
@@ -140,10 +142,10 @@ namespace Poincare.PoincareDisc {
 
 			DrawBlendedHorizon(backgroundColor);
 			
-			drawTime = System.DateTime.Now.Ticks * 1E-7 - time;
+			DrawTime = System.DateTime.Now.Ticks * 1E-7 - time;
 
 #if true // adjust timing
-			double diff = drawTimeTarget - drawTime;
+			double diff = drawTimeTarget - DrawTime;
 			if (drawCount < 16 && Math.Abs(diff) > 0.004) {
 				circleLimit *= 1 + diff / 2;
 				circleLimit = Math.Min(circleLimit, 0.99);
@@ -151,7 +153,7 @@ namespace Poincare.PoincareDisc {
 			
 			circleLimitAlphaBand = (circleLimitAlphaBand + (1 - (1 - circleLimit) * 2)) / 2;
 #endif
-			totalDraw += drawTime;
+			totalDraw += DrawTime;
 			drawCount++;
 
 			

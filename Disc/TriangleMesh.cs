@@ -69,11 +69,7 @@ namespace Poincare.PoincareDisc {
 			 * 00  01  02  00  01
 			 */
 			
-			const int smallCount = 3;
-			const int mediumCount = 6;
 			const int largeCount = 15;
-			const double mediumRadius = 0.5;
-			const double smallRadius = 0.8;
 		
 			Debug.Assert(points.Length == largeCount);
 			

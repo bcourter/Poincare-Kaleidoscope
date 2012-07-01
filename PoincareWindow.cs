@@ -25,7 +25,6 @@ namespace Poincare.Application {
 		double time = System.DateTime.Now.Ticks * 1E-7;
 		double oldTime = System.DateTime.Now.Ticks * 1E-7;
 		double startTime = System.DateTime.Now.Ticks * 1E-7;
-		int drawCount = 0;
 		double resetTime = 0;
 		double resetDuration = 60;
 		JoystickControl joystickControl = null;
@@ -151,7 +150,6 @@ namespace Poincare.Application {
 			GL.MatrixMode(MatrixMode.Modelview);
 			GL.LoadMatrix(ref modelview);
 			
-			drawCount = 0;
 			startTime = time;
 		}
 
@@ -175,7 +173,7 @@ namespace Poincare.Application {
 			}
 			
 			if (joystickControl != null)
-				joystickControl.Sample();
+				joystickControl.Sample(disc.DrawTime);
 			
 			mouseControl.Sample();
 
@@ -198,9 +196,7 @@ namespace Poincare.Application {
 
 		//	SaveGL(time.ToString("000000000.000000"));
 
-
 			SwapBuffers();
-			
 		}
 
 		// http://www.opengl.org/discussion_boards/showthread.php/165932-Capture-OpenGL-screen-C/page2
@@ -242,7 +238,6 @@ namespace Poincare.Application {
 			Circle.Create(Complex.Zero, 0.02).DrawGL(Color4.Gray);
 			foreach (Complex zero in zeros)
 				Circle.Create(zero, 0.02).DrawGL(Color4.White);
-
 
 			GL.Begin(BeginMode.LineLoop);
 			GL.Color4(Color.Blue);
