@@ -68,7 +68,6 @@
     <None Include="Resources\LawsonFront.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="op.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Geometry\" />

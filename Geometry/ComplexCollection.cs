@@ -20,13 +20,13 @@ namespace Poincare.Geometry {
 			int radius = (int)Math.Floor(c.ModulusSquared * radiusResolution);
 			
 			if (sectors[sector].ContainsKey(radius)) {
-				if (!ContainsValue(c)) {
+		//		if (!ContainsValue(c)) {
 					sectors[sector][radius].Add(c);
-				}	 
+		//		}	 
 				return;
 			}
 			
-			sectors[sector].Add(radius, new List<Complex>());
+			sectors[sector].Add(radius, new List<Complex>(100));
 			sectors[sector][radius].Add(c);
 		}
 

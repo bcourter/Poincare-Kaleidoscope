@@ -28,11 +28,11 @@ namespace Poincare.Application {
 		private void Joystick_ButtonDown(object sender, JoystickButtonEventArgs e) {
 			switch (e.Button) {
 			case JoystickButton.Button0: // Trigger
-				isLimit = true;
+				isBraking = true;
 				break;
 				
 			case JoystickButton.Button1: // Grip
-				isBraking = true;
+				isLimit = true;
 				break;
 				
 			case JoystickButton.Button2: // Thumb bottom left
@@ -90,11 +90,11 @@ namespace Poincare.Application {
 		private void Joystick_ButtonUp(object sender, JoystickButtonEventArgs e) {
 			switch (e.Button) {
 			case JoystickButton.Button0: // Trigger
-				isLimit = false;
+				isBraking = false;
 				break;
 	
 			case JoystickButton.Button1: // Grip
-				isBraking = false;
+				isLimit = false;
 				break;
 			}
 		}

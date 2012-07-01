@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 //using System.Linq;
-using System.Drawing;
 
 using OpenTK;
 using OpenTK.Graphics;
@@ -161,14 +160,14 @@ namespace Poincare.Application {
 		/// </summary>
 		/// <param name="e">Contains timing information.</param>
 		protected override void OnRenderFrame(FrameEventArgs e) {
-			GC.Collect();
+			//GC.Collect();
 
 			//	GC.WaitForPendingFinalizers();
 			base.OnRenderFrame(e);
 			
 			oldTime = time;
 			time = System.DateTime.Now.Ticks * 1E-7;
-			Console.WriteLine(string.Format("Frame:{0:F5} Avg:{1:F5}", time - oldTime, (time - startTime) / ++drawCount));
+//			Console.WriteLine(string.Format("Frame:{0:F5} Avg:{1:F5}", time - oldTime, (time - startTime) / ++drawCount));
 			
 			if (IsRandomizing && time - resetTime > resetDuration) {
 				Randomize();
@@ -298,14 +297,13 @@ namespace Poincare.Application {
 		[STAThread]
 		static void Main(string[] args) {
 			ImageFiles = new List<string>();
-			string imageFileDir = System.IO.Path.Combine(System.Environment.CurrentDirectory, "Resources");
-			ImageFiles.AddRange(GetImages(imageFileDir));
+			string defaultImageFileDir = System.IO.Path.Combine(System.Environment.CurrentDirectory, "Resources");
+			ImageFiles.AddRange(GetImages(defaultImageFileDir));
 
 			//		graphicsMode = new GraphicsMode(GraphicsMode.Default.ColorFormat, GraphicsMode.Default.Depth, GraphicsMode.Default.Stencil, graphicsModeSamples);
 			graphicsMode = new GraphicsMode();
 			
-			if (args.Length > 0) {
-				imageFileDir = args[0];
+			foreach (string imageFileDir in args) {
 				if (imageFileDir != string.Empty)
 					ImageFiles.AddRange(GetImages(imageFileDir));
 			}

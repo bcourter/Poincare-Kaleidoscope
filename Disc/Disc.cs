@@ -24,10 +24,11 @@ namespace Poincare.PoincareDisc {
 		double circleLimitAlphaBand = 0;
 		double drawTimeTarget = 0.04; //0.04;
 
-		Face[] result = new Face[1000];
+		Face[] result = new Face[2000];
 		int resultLength;
-		ComplexCollection faceCenters = new ComplexCollection(10);
-		Queue<Face > faceQueue = new Queue<Face>(1000);
+//		ComplexCollection faceCenters = new ComplexCollection(10);
+		List<Complex> faceCenters = new List<Complex>(2000);
+		Queue<Face > faceQueue = new Queue<Face>(2000);
 		
 		public Disc(FundamentalRegion region, Bitmap bitmap, bool isInverting) {
 			this.fundamentalRegion = region;
@@ -127,7 +128,7 @@ namespace Poincare.PoincareDisc {
 			Complex texOffset = new Complex(0.5 + 0.5 * Math.Cos(textureTime / 20), 0.5 + 0.5 * Math.Sin(3 * textureTime / 50));
 
 			IList<Face> faces = GetFaces(currentFace);
-			Console.Write(string.Format("{0:F5} ", System.DateTime.Now.Ticks * 1E-7-time));
+		//	Console.Write(string.Format("{0:F5} ", System.DateTime.Now.Ticks * 1E-7-time));
 			
 			Color4 color = new Color4(1f, 1f, 1f, 0.5f);
 	//		foreach (Face face in faces) {
@@ -174,7 +175,7 @@ namespace Poincare.PoincareDisc {
 
 			double time = System.DateTime.Now.Ticks * 1E-7;
 			
-				GC.Collect();
+	//			GC.Collect();
 			while (faceQueue.Count > 0) {
 				Face face = faceQueue.Dequeue();
 				for (int i = 0; i < face.Edges.Length; i++) {
@@ -192,7 +193,8 @@ namespace Poincare.PoincareDisc {
 					if (image.Center.ModulusSquared > circleLimit)
 						continue;
 
-					if (faceCenters.ContainsValue(image.Center))
+					if (faceCenters.Contains(image.Center))
+//					if (faceCenters.ContainsValue(image.Center))
 						continue;
 
 					faceQueue.Enqueue(image);
@@ -201,13 +203,14 @@ namespace Poincare.PoincareDisc {
 					//		result.Add(image);
 					faceCenters.Add(image.Center);
 	
-//					if (System.DateTime.Now.Ticks * 1E-7 - time > drawTimeTarget)
-//						break;
-		 		if (resultLength <= 102)
-					Console.Write(string.Format("{0:F5} ", System.DateTime.Now.Ticks * 1E-7 - time));
+					if (System.DateTime.Now.Ticks * 1E-7 - time > drawTimeTarget * 1.5)
+						break;
+//		 		if (resultLength <= 102)
+//					Console.Write(string.Format("{0:F5} ", System.DateTime.Now.Ticks * 1E-7 - time));
 			}
 			
-
+		//			Console.Write(string.Format("{0:F5} ", System.DateTime.Now.Ticks * 1E-7 - time));
+				
 				
 //				if (System.DateTime.Now.Ticks * 1E-7 - time > drawTimeTarget)
 //					break;
